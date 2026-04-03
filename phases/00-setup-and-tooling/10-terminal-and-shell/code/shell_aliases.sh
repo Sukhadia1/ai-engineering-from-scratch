@@ -4,13 +4,6 @@
 # Source this from your ~/.bashrc or ~/.zshrc:
 #   source /path/to/shell_aliases.sh
 
-# --- GPU ---
-
-alias gpu='nvidia-smi --query-gpu=index,name,utilization.gpu,memory.used,memory.total,temperature.gpu --format=csv,noheader'
-alias gpuwatch='watch -n1 nvidia-smi'
-alias gpumem='nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader'
-alias gpuprocs='nvidia-smi --query-compute-apps=pid,name,used_memory --format=csv'
-
 # --- Training control ---
 
 alias killtraining='pkill -f "python.*train"'
@@ -51,8 +44,6 @@ alias bigmodels='find . \( -name "*.pt" -o -name "*.pth" -o -name "*.safetensors
 
 # --- Quick environment checks ---
 
-alias checkgpu='python -c "import torch; print(f\"CUDA: {torch.cuda.is_available()}\"); print(f\"Device: {torch.cuda.get_device_name(0)}\") if torch.cuda.is_available() else None"'
-alias checkcuda='env | grep -i cuda'
 alias checkenv='python --version && pip --version && python -c "import torch; print(f\"PyTorch {torch.__version__}, CUDA {torch.cuda.is_available()}\")" 2>/dev/null'
 
 # --- tmux shortcuts ---
@@ -67,7 +58,7 @@ trainenv() {
     tmux new-session -d -s "$name"
     tmux split-window -h -t "$name"
     tmux split-window -v -t "$name"
-    tmux send-keys -t "$name:0.1" 'watch -n1 nvidia-smi' C-m
+    tmux send-keys -t "$name:0.1" 'htop' C-m
     tmux send-keys -t "$name:0.2" 'htop' C-m
     tmux select-pane -t "$name:0.0"
     tmux attach -t "$name"

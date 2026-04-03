@@ -3,15 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
     volumes:
-      - ../../../:/workspace
+      - ${REPO_ROOT:-../../../}:/workspace
       - ~/models:/models
       - ~/datasets:/data
     ports:
